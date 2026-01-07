@@ -1,0 +1,61 @@
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" *ngIf="isModalOpen" (click)="closeModal()"></div>
+
+<!-- Modal Container -->
+<div class="modal-container" *ngIf="isModalOpen">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h2>Add New Employee / Bulk Import</h2>
+      <button class="close-btn" (click)="closeModal()">x</button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label>Emp ID:</label>
+          <input type="text" class="form-control" name="employee_id" [(ngModel)]="empId" placeholder="Enter Employee ID" />
+        </div>
+
+        <div class="form-group">
+          <label>WWID:</label>
+          <input type="text" class="form-control" name="wwid" [(ngModel)]="wwid" placeholder="Enter WWID" />
+        </div>
+
+        <div class="form-group">
+          <label>Name:</label>
+          <input type="email" class="form-control" name="name" [(ngModel)]="name" placeholder="Enter Name" />
+        </div>
+
+        <div class="form-group">
+          <label>Shift Type:</label>
+          <select class="form-control" name="shift_id"  [(ngModel)]="shiftType">
+            <option>4</option>
+            <option>3</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Employment Status:</label>
+          <select class="form-control" name="state" [(ngModel)]="employmentStatus">
+            <option>1</option>
+            <option>2</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Status Effective Date:</label>
+          <input type="date" class="form-control" name="created_date" [(ngModel)]="effectiveDate"
+ />
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button class="btn btn-cancel" (click)="closeModal()">Cancel</button>
+      <button class="btn btn-submit" (click)="onSubmit()">Add Employee</button>
+    </div>
+  </div>
+</div>

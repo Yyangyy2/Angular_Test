@@ -1,0 +1,78 @@
+<div class="container">
+  <h1>Employee Details</h1>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+<!-- <h1>yes</h1> -->
+
+  <!-- Filters Section -->
+  <div class="filters-section" *ngIf="!isLoading">
+    <div class="filter-group">
+      <label>Search:</label>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        placeholder="Search by ID, WWID, or name"
+        name="search">
+    </div>
+    <div class="filter-group"><label>Add:</label>
+       <button class="btn btn-add" (click)="addNewEmployee()">
+          Add New Employee/Bulk import
+       </button>
+    </div>
+    <app-employee-add></app-employee-add>
+
+
+
+    <div class="filter-group"><label>Edit:</label></div>
+    <div class="filter-group"><label>Delete:</label></div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="buttons-section" *ngIf="!isLoading">
+    <button class="btn btn-export" (click)="exportCSV()" [disabled]="filteredData.length === 0">
+      📥 Export CSV
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper" *ngIf="!isLoading">
+    <table class="attendance-table" *ngIf="filteredData.length > 0; else noData">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Emp ID</th>
+          <th>WWID</th>
+          <th>Name</th>
+          <th>Shift</th>
+          <th>State</th>
+          <th>Created Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of filteredData">
+          <td>{{ row.id }}</td>
+          <td>{{ row.employee_id }}</td>
+          <td>{{ row.wwid }}</td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.shift_id }}</td>
+          <td>{{ row.state }}</td>
+          <td>{{ row.created_date | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noData>
+      <div class="no-data">
+        <p>No employees found</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <p class="record-count" *ngIf="!isLoading">
+    Showing {{ filteredData.length }} of {{ employeeData.length }} employees
+  </p>
+</div>
