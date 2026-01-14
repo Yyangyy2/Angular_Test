@@ -150,6 +150,46 @@ app.post('/api/employees', async (req, res) => {
 
 
 
+// DELETE - Delete employee by ID
+app.delete('/api/employees/:id', async (req, res) => {
+  console.log(`📞 DELETE /api/employees/${req.params.id}`);
+
+  try {
+    const id = req.params.id;
+
+    // First check if employee exists
+    const checkResult = await pool.query(
+      'SELECT id FROM manual_attendance_schema.employee WHERE id = $1',
+      [id]
+    );
+
+    if (checkResult.rows.length === 0) {
+      return res.status(404).json({ message: 'Employee not found' });
+    }
+
+    // Delete the employee
+    const result = await pool.query(
+      'DELETE FROM manual_attendance_schema.employee WHERE id = $1 RETURNING id',
+      [id]
+    );
+
+    console.log(`✅ Employee ${id} deleted successfully`);
+
+    res.json({
+      message: 'Employee deleted successfully',
+      deletedId: result.rows[0].id
+    });
+
+  } catch (error) {
+    console.error('❌ Error deleting employee:', error.message);
+    console.error('❌ Full error:', error);
+    res.status(500).json({
+      message: 'Error deleting employee: ' + error.message
+    });
+  }
+});
+
+
 
 
 

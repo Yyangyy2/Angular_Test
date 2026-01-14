@@ -112,6 +112,15 @@ h1 {
   background: #6b7280;
 }
 
+.btn-delete {
+  background: #f93c3c;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #f50c0c;
+}
+
 /* Table Section */
 .table-wrapper {
   background: white;

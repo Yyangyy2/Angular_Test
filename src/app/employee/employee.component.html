@@ -8,7 +8,7 @@
 <!-- <h1>yes</h1> -->
 
   <!-- Filters Section -->
-  <div class="filters-section" *ngIf="!isLoading">
+  <div class="filters-section">
     <div class="filter-group">
       <label>Search:</label>
       <input
@@ -28,22 +28,26 @@
 
 
     <div class="filter-group"><label>Edit:</label></div>
-    <div class="filter-group"><label>Delete:</label></div>
+    <div class="filter-group"><label>Delete:</label>
+      <button class="btn btn-delete" (click)="deleteSelectedEmployees()">
+          Delete Employee
+       </button>
+    </div>
   </div>
 
   <!-- Action Buttons -->
-  <div class="buttons-section" *ngIf="!isLoading">
-    <button class="btn btn-export" (click)="exportCSV()" [disabled]="filteredData.length === 0">
+  <div class="buttons-section">
+    <button class="btn btn-export" (click)="exportCSV()" [disabled]="filteredEmployeeData.length === 0">
       📥 Export CSV
     </button>
   </div>
 
   <!-- Table -->
-  <div class="table-wrapper" *ngIf="!isLoading">
-    <table class="attendance-table" *ngIf="filteredData.length > 0; else noData">
+  <div class="table-wrapper">
+    <table class="attendance-table" *ngIf="filteredEmployeeData.length > 0; else noData">
       <thead>
         <tr>
-          <th>ID</th>
+          <th></th>
           <th>Emp ID</th>
           <th>WWID</th>
           <th>Name</th>
@@ -53,8 +57,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of filteredData">
-          <td>{{ row.id }}</td>
+        <tr *ngFor="let row of filteredEmployeeData">
+          <td><input type="checkbox" [(ngModel)]="row.selected"></td>
           <td>{{ row.employee_id }}</td>
           <td>{{ row.wwid }}</td>
           <td>{{ row.name }}</td>
@@ -72,7 +76,7 @@
     </ng-template>
   </div>
 
-  <p class="record-count" *ngIf="!isLoading">
-    Showing {{ filteredData.length }} of {{ employeeData.length }} employees
+  <p class="record-count">
+    Showing {{ filteredEmployeeData.length }} of {{ employeeData.length }} employees
   </p>
 </div>
