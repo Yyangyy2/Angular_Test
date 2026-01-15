@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
@@ -26,7 +26,7 @@ export class EmployeeComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(private employeeService: EmployeeService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadEmployeeData();
@@ -41,11 +41,13 @@ export class EmployeeComponent implements OnInit {
         this.employeeData = data.map(emp => ({ ...emp, selected: false }));
         this.applyFilters();
         this.isLoading = false;
+        this.cdr.detectChanges(); // Manually trigger change detection
       },
       error: (error) => {
         this.errorMessage = 'Failed to load employee data: ' + error.message;
         this.isLoading = false;
         console.error('Error loading data:', error);
+        this.cdr.detectChanges(); // Manually trigger change detection
       }
     });
   }
@@ -136,12 +138,8 @@ export class EmployeeComponent implements OnInit {
 
     forkJoin(deleteRequests).subscribe({
       next: () => {
-
-        const deletedIds = new Set(validEmployees.map(emp => emp.id));
-        this.employeeData = this.employeeData.filter(emp => !deletedIds.has(emp.id));
-        this.applyFilters();
-        this.isLoading = false;
         alert(`Successfully deleted ${validEmployees.length} employee(s)`);
+        this.loadEmployeeData(); // This reloads the employee list (auto-refresh)
       },
       error: (error) => {
         this.errorMessage = 'Failed to delete employee(s): ' + error.message;
